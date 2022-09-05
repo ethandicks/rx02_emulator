@@ -1,7 +1,7 @@
 //
 // project definitions
 //
-// Copyright (c) 2015-2016, Donald N North
+// Copyright (c) 2015-2021, Donald N North
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -36,7 +36,7 @@
 // configuration
 //
 // use:  https://github.com/PaulStoffregen/Time  TimeLib.h if defined (uncomment next line)
-// #define USE_TIMELIB_H
+//#define USE_TIMELIB_H
 //
 // use:  https://github.com/greiman/SdFat  SdFat.h if defined (uncomment next line)
 #define USE_SDFAT_H

@@ -35,7 +35,8 @@ The Arduino controller software has been moved into the source directory.
 
 Sample boot log in the Arduino USB serial monitor window:
 ```
-RX02 Emulator v1.93 (IDE 1.8.12/gcc 7.3.0) - Apr 23 2020 - 19:51:36
+RX02 Emulator v1.96 (IDE 1.8.19/gcc 7.3.0) - Jul 14 2022 - 14:05:14
+SD: libVersion=2.2.0
 SD: cardType=SD3
 SD: cardSize=3781MB
 SD: volType=FAT32
@@ -193,6 +194,10 @@ C:\Users\yourname\My Documents\Arduino\libraries
 
 which probably just contains a `readme.txt` file. The `SdFat` library is now installed and ready for use.
 
+As of version v1.96 release the code is compatible with either the existing v1 SDfat library (eg, v1.1.4) or the newer v2 SDfat library (eg, v2.2.0) code.
+
+I have tested with the v2.0.6, v2.0.7, v2.1.0, and v2.2.0 SDfat libraries. There were some changes from 2.0.x to 2.1.x and later and these are accounted for in some conditionals.
+
 ## PRINTF Configuration ##
 
 The emulator code is written assuming that the printf/sprintf methods have been added to the serial I/O and file access routines. The default Arduino install does not have this support so it needs to be configured.
@@ -308,5 +313,10 @@ In the lower right, select `Carriage Return` line ending, so when you type in th
 
 At this point you should be seeing debug output in the serial monitor window, and be able to send menu commands to it.
 
-## The End ##
+## Hardware ##
 
+UPDATED 09-Aug-2021 -- the timing macros for the data transfer to/from the interface board have been modified to allow working with a longer flat cable. As of the v1.95 release the emulator has been tested and worked flawlessly using a DEC BC06R-12 cable (12' long, about 4m) on a PDP-11/44 with an RX211 interface. Performance degradation due to the slightly slower data transfer handshake timing has been measured at about 5% or less, which in practice is not noticeable. Of course it still works flawlessly using a shorter 0.5 to 1.5m cable as well.
+
+DEPRECATED 09-Aug-2021 -- Many original RX01/2 configurations come with an up to 5m controller card to connector cable (a 40p flat cable with 2x20p IDE connectors). It has been noticed that in some configurations using this same cable to connect to the RX02 emulator from the RXnn controller card results in unreliable operation or it does not work at all. The recommendation is to use a shorter 40p flat cable, on the order of 0.5m to 1.5m at most, for reliable operation.
+
+## The End ##

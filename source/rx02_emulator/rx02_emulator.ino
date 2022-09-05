@@ -1,7 +1,7 @@
 //
 // RX8E/RX28/RX11/RX211/RXV11/RXV21 to TU58/serial or SDcard Interface
 //
-// Copyright (c) 2015-2016, Donald N North
+// Copyright (c) 2015-2021, Donald N North
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -43,7 +43,7 @@
 #define DEBUG_TU58 0
 
 // program version id
-#define VERSION  "v1.93"
+#define VERSION  "v1.97"
 
 // baud rate for USB serial debug port
 //
@@ -624,11 +624,18 @@ void setup (void)
 #endif    
 
     // say hello
-    tty->printf(F("RX02 Emulator %s (IDE %u.%u.%u/gcc %s) - %s - %s\n"),
+    tty->printf(F("\nRX02 Emulator %s (IDE %u.%u.%u/gcc %s) - %s - %s\n"),
                 VERSION,
                 (ARDUINO/10000)%100, (ARDUINO/100)%100, (ARDUINO/1)%100,
                 __VERSION__, __DATE__, __TIME__);
+
+    // test LEDs
+    led_state(red, on);
+    led_state(green, on);
+    led_state(yellow, on);
     delay(1000);
+    led_state(green, off);
+    led_state(yellow, off);
 
 #if USE_SD
     // check for SD card

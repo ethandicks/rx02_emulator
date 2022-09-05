@@ -1,7 +1,7 @@
 //
 // sdcard_driver - SD card Fat filesystem access routines
 //
-// Copyright (c) 2015-2016, Donald N North
+// Copyright (c) 2015-2021, Donald N North
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -121,19 +121,29 @@ uint8_t sd_initialize (void)
 
     // some card parameters
     uint8_t ctype = sdcard.card()->type();
+#if SD_FAT_VERSION <= 20007
     uint32_t csize = ((sdcard.card()->cardSize()/1024L)*512L)/1024L;
+#else
+    uint32_t csize = ((sdcard.card()->sectorCount()/1024L)*512L)/1024L;
+#endif
     if (debugLevel) {
+        debugPort->printf(F("SD: libVersion=%d.%d.%d\n"), SD_FAT_VERSION/10000, (SD_FAT_VERSION/100)%100, SD_FAT_VERSION%100);
         debugPort->printf(F("SD: cardType=SD%d\n"), ctype);
         debugPort->printf(F("SD: cardSize=%luMB\n"), csize);
     }
 
-    // open the card - it should be FAT16 or FAT32
+#if SD_FAT_VERSION < 20000
+    // check card is open - it should be FAT16 or FAT32
     if (!sdcard.vwd()->isOpen()) return initOk;
+#endif
 
     // some volume parameters
     uint8_t vtype = sdcard.vol()->fatType();
+#if SD_FAT_VERSION <= 20007
     uint32_t vbpc = sdcard.vol()->blocksPerCluster()*512L;
-    uint32_t vcss = sdcard.vol()->clusterSizeShift();
+#else
+    uint32_t vbpc = sdcard.vol()->bytesPerCluster();
+#endif
     uint32_t vucc = sdcard.vol()->clusterCount();
     uint32_t vsize = (vbpc/1024L)*(vucc/1024L);
     if (debugLevel) {
@@ -342,11 +352,11 @@ uint32_t sd_set_file_size (char *name, uint32_t size, uint8_t mode)
     // free buffer
     free(buf);
 
+    // truncate file if too large
+    sdfile.truncate(size);
+
     // close the file, done for now
     sdfile.close();
-
-    // truncate file if too large
-    sdcard.truncate(name, size);
 
     // return the size
     return sd_get_file_size(name);
