@@ -28,7 +28,7 @@
 #ifndef my_project_h
 #define my_project_h
 
-#define USE_LCD_MENU 0
+#define USE_LCD_MENU 1
 #define USE_LCD_BOARD 1
 
 

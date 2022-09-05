@@ -1,3 +1,5 @@
+This fork enables support for a new PCB design that adds buttons and a LCD menu so you can use the emulator without an attached serial terminal for control and configuration.  The PCB design in available at https://github.com/djtersteegc/rx02-emulator-mega-shield
+
 # Overview #
 
 `rx02_emulator` is a hardware/software emulation of a DEC RX02 (or RX01) dual 8" floppy disk drive. The software runs on an Arduino Mega2560 processor board with a custom hardware interface shield that maps a dozen or so digital port bits to the custom DEC RX drive interface protocol.

@@ -775,50 +775,7 @@ void loop (void)
         break;
     }
       
-
-  //int x;
- //x = analogRead (0);
-
-/*
- x = read_buttons();
- //Right
- if (x < 60) {
-    delay(SOFT_DEBOUNCE_MS);
-    while(x < 60) {x = analogRead (0);}
-    nav.doNav(enterCmd);
-    delay(SOFT_DEBOUNCE_MS);
- }
- //Up
- else if (x < 200) {
-    delay(SOFT_DEBOUNCE_MS);
-    while(x < 200) {x = analogRead (0);}
-    nav.doNav(downCmd);
-    delay(SOFT_DEBOUNCE_MS);
- }
- //Down
- else if (x < 400){
-    delay(SOFT_DEBOUNCE_MS);
-    while(x < 400) {x = analogRead (0);}
-    nav.doNav(upCmd);
-    delay(SOFT_DEBOUNCE_MS);
- }
- //Left
- else if (x < 600){
-    delay(SOFT_DEBOUNCE_MS);
-    while(x < 600) {x = analogRead (0);}
-    nav.doNav(escCmd);
-    delay(SOFT_DEBOUNCE_MS);
- }
- //Select
- else if (x < 800){
-    delay(SOFT_DEBOUNCE_MS);
-    while(x < 800) {x = analogRead (0);}
-    nav.doNav(escCmd);
-    delay(SOFT_DEBOUNCE_MS);
- }
- */
- 
-  nav.doOutput();//if not doing poll the we need to do output "manualy"
+    nav.doOutput();//if not doing poll the we need to do output "manualy"
 #endif   
 
 #if USE_TU58
