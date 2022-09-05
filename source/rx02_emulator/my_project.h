@@ -28,6 +28,8 @@
 #ifndef my_project_h
 #define my_project_h
 
+#define USE_LCD_MENU 0
+#define USE_LCD_BOARD 1
 
 
 //
@@ -62,6 +64,12 @@
 #include <TimeLib.h>
 #endif // USE_TIMELIB_H
 
+#if USE_LCD_MENU
+#include <Wire.h>
+#include <menu.h>
+#include <menuIO/liquidCrystalOut.h>
+#include <menuIO/keyIn.h>
+#endif
 
 
 //
@@ -80,6 +88,23 @@
 //
 // standard digital pins 0.. 13,  extra mega digital pins 14..53
 //
+#if USE_LCD_BOARD
+const byte PIN_CTLR_RUN_H      =  22; // PA0 input, interrupt
+const byte PIN_CTLR_INIT_H     =  26; // PA4 input, interrupt
+//
+const byte PIN_CTLR_DONE_H     = 40; // PG1 output
+const byte PIN_CTLR_ERROR_H    = 36; // PC1 output
+const byte PIN_CTLR_12BIT_H    = 28; // PA6 input
+const byte PIN_CTLR_TR_RQST_H  = 38; // PD7 output
+const byte PIN_CTLR_DATAO_H    = 42; // PL7 output
+const byte PIN_CTLR_DATAI_H    = 30; // PC7 input
+const byte PIN_CTLR_OUT_H      = 46; // PL3 output
+const byte PIN_CTLR_SHIFT_H    = 44; // PL5 output
+const byte PIN_CTLR_ACLO_H     = 48; // PL1 output
+const byte PIN_CTLR_DMA_MODE_L = 24; // PA2 input
+//
+const byte PIN_SD_CD           = 0; // set to zero if not available
+#else
 const byte PIN_CTLR_RUN_H      =  2; // PE4 input, interrupt
 const byte PIN_CTLR_INIT_H     =  3; // PE5 input, interrupt
 //
@@ -95,15 +120,29 @@ const byte PIN_CTLR_ACLO_H     = 36; // PC1 output
 const byte PIN_CTLR_DMA_MODE_L = 37; // PC0 input
 //
 const byte PIN_SD_CD           = 49; // card detect input, active high
+#endif
 const byte PIN_SD_MISO         = 50; // card MISO/DO input, active high
 const byte PIN_SD_MOSI         = 51; // card MOSI/DI output, active high
 const byte PIN_SD_SCK          = 52; // card SCK output, active high
 const byte PIN_SD_CS_L         = 53; // chip select output, active low
 //
+#if USE_LCD_BOARD
+const byte PIN_LED1            = 58; // A4, output, LED1, active high
+const byte PIN_LED2            = 59; // A5, output, LED2, active high
+const byte PIN_LED3            = 60; // A6, output, LED3, active high
+#else
 const byte PIN_LED1            = 10; // output, LED1, active high
 const byte PIN_LED2            = 11; // output, LED2, active high
 const byte PIN_LED3            = 12; // output, LED3, active high
+#endif
 const byte PIN_LEDY            = 13; // output, onboard yellow LED, active high
+//
+#if USE_LCD_MENU
+const byte PIN_BUTTON_MENU = 55;  // A1, Pin for Menu/Esc digital button.
+const byte PIN_BUTTON_UP = 56;    // A2, Pin for Up digital button.
+const byte PIN_BUTTON_DOWN = 54;  // A0, Pin for Down digital button.
+const byte PIN_BUTTON_ENTER = 57; // A3, Pin for Enter digital button.
+#endif
 
 
 

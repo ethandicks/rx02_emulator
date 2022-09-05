@@ -83,6 +83,12 @@
 #include "rx02_driver.h"
 #include "sdcard_driver.h"
 
+#if USE_LCD_MENU
+#include "lcd_menu.h"
+extern LiquidCrystal lcd;
+extern navRoot nav;
+extern void lcd_menu_setup(void);
+#endif
 
 
 //
@@ -604,6 +610,19 @@ void setup (void)
     // init LED drivers
     led_initialize();
 
+#if USE_LCD_MENU
+    lcd.begin(16,2);
+    lcd.setCursor(0, 0);
+    lcd.print("RX02 Emulator");
+    lcd.setCursor(0, 1);
+    lcd.print(VERSION);
+
+    pinMode(PIN_BUTTON_MENU,INPUT_PULLUP);
+    pinMode(PIN_BUTTON_UP,INPUT_PULLUP);
+    pinMode(PIN_BUTTON_DOWN,INPUT_PULLUP);
+    pinMode(PIN_BUTTON_ENTER,INPUT_PULLUP);        
+#endif    
+
     // say hello
     tty->printf(F("RX02 Emulator %s (IDE %u.%u.%u/gcc %s) - %s - %s\n"),
                 VERSION,
@@ -660,12 +679,70 @@ void setup (void)
     }
 #endif // USE_SD
 
+#if USE_LCD_MENU
+  lcd_menu_setup();
+#endif
+
     // done
     tty->printf(F("Initialization complete.\n"));
     return;
 }
 
+#if USE_LCD_MENU
+byte read_buttons(void){
+  // 0 = No Key pressed                
+  // 1 = Menu
+  // 2 = Up
+  // 3 = Down
+  // 4 = Enter
 
+  byte DebounceDelay = 50;
+  byte KeyOutput = 0;
+
+  byte MenuButtonState = digitalRead(PIN_BUTTON_MENU);
+  byte UpButtonState = digitalRead(PIN_BUTTON_UP);
+  byte DownButtonState = digitalRead(PIN_BUTTON_DOWN);
+  byte EnterButtonState = digitalRead(PIN_BUTTON_ENTER);  
+
+  if (MenuButtonState == LOW){ // Right button press
+    delay(DebounceDelay);
+    if (digitalRead(PIN_BUTTON_MENU) == LOW) {
+      KeyOutput = 1;
+      while (digitalRead(PIN_BUTTON_MENU) == LOW);
+      tty->printf(F("Menu/Esc Button Pressed\n")); 
+    }
+  }
+
+  if (UpButtonState == LOW){ // Right button press
+    delay(DebounceDelay);
+    if (digitalRead(PIN_BUTTON_UP) == LOW) {
+      KeyOutput = 2;
+      while (digitalRead(PIN_BUTTON_UP) == LOW);
+      tty->printf(F("Up Button Pressed\n")); 
+    }
+  }
+
+  if (DownButtonState == LOW){ // Right button press
+    delay(DebounceDelay);
+    if (digitalRead(PIN_BUTTON_DOWN) == LOW) {
+      KeyOutput = 3;
+      while (digitalRead(PIN_BUTTON_DOWN) == LOW);
+      tty->printf(F("Down Button Pressed\n")); 
+    }
+  }
+
+  if (EnterButtonState == LOW){ // Right button press
+    delay(DebounceDelay);
+    if (digitalRead(PIN_BUTTON_ENTER) == LOW) {
+      KeyOutput = 4;
+      while (digitalRead(PIN_BUTTON_ENTER) == LOW);
+      tty->printf(F("Enter Button Pressed\n")); 
+    }
+  }      
+
+  return KeyOutput;
+}
+#endif
 
 //
 // loop routine runs continuously
@@ -674,6 +751,68 @@ void loop (void)
 {
     // check if user typed a character
     if (tty->available()) run_user(tty->read());
+
+#if USE_LCD_MENU
+    switch (read_buttons()){
+      case 1:
+        nav.doNav(escCmd);
+        break;
+      case 2:
+        nav.doNav(downCmd);
+        break;
+      case 3:
+        nav.doNav(upCmd);
+        break;
+      case 4:
+        nav.doNav(enterCmd);
+        break;
+    }
+      
+
+  //int x;
+ //x = analogRead (0);
+
+/*
+ x = read_buttons();
+ //Right
+ if (x < 60) {
+    delay(SOFT_DEBOUNCE_MS);
+    while(x < 60) {x = analogRead (0);}
+    nav.doNav(enterCmd);
+    delay(SOFT_DEBOUNCE_MS);
+ }
+ //Up
+ else if (x < 200) {
+    delay(SOFT_DEBOUNCE_MS);
+    while(x < 200) {x = analogRead (0);}
+    nav.doNav(downCmd);
+    delay(SOFT_DEBOUNCE_MS);
+ }
+ //Down
+ else if (x < 400){
+    delay(SOFT_DEBOUNCE_MS);
+    while(x < 400) {x = analogRead (0);}
+    nav.doNav(upCmd);
+    delay(SOFT_DEBOUNCE_MS);
+ }
+ //Left
+ else if (x < 600){
+    delay(SOFT_DEBOUNCE_MS);
+    while(x < 600) {x = analogRead (0);}
+    nav.doNav(escCmd);
+    delay(SOFT_DEBOUNCE_MS);
+ }
+ //Select
+ else if (x < 800){
+    delay(SOFT_DEBOUNCE_MS);
+    while(x < 800) {x = analogRead (0);}
+    nav.doNav(escCmd);
+    delay(SOFT_DEBOUNCE_MS);
+ }
+ */
+ 
+  nav.doOutput();//if not doing poll the we need to do output "manualy"
+#endif   
 
 #if USE_TU58
   #if TEST_TU58

@@ -113,7 +113,8 @@ uint8_t sd_initialize (void)
     initOk = FALSE;
 
     // check for card detect
-    if (!digitalRead(PIN_SD_CD)) return initOk;
+    if (PIN_SD_CD > 0)
+      if (!digitalRead(PIN_SD_CD)) return initOk;
 
     // init card, check for success
     if (!sdcard.begin(PIN_SD_CS_L, SPI_FULL_SPEED)) { sdcard.initErrorHalt(); return initOk; }
