@@ -1,7 +1,7 @@
 //
 // local type definitions
 //
-// Copyright (c) 2015-2021, Donald N North
+// Copyright (c) 2015-2022, Donald N North
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
 // copy of this software and associated documentation files (the "Software"),
@@ -76,22 +76,22 @@
 //
 typedef union { // either:
     struct { // four 8b bytes
-	      uint8_t   ll;
-	      uint8_t   lh;
-	      uint8_t   hl;
-	      uint8_t   hh;
+        uint8_t   ll;
+        uint8_t   lh;
+        uint8_t   hl;
+        uint8_t   hh;
     } b;
     struct { // two 16b words
-	      uint16_t   l;
-	      uint16_t   h;
+        uint16_t   l;
+        uint16_t   h;
     } w;
     uint32_t l; // or one 32b long
 } uint32s_t;
 //
 typedef union { // either:
     struct { // two 8b bytes
-	      uint8_t   l;
-	      uint8_t   h;
+        uint8_t   l;
+        uint8_t   h;
     } b;
     uint16_t w; // or one 16b word
 } uint16s_t;
