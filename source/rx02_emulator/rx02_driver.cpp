@@ -150,8 +150,8 @@
 #define rx_tst_datai(xxx)    bitRead(PINC,7)    /*  digitalRead(PIN_CTLR_DATAI_H) */
 #define rx_tst_12b(xxx)      bitRead(PINA,6)    /*  digitalRead(PIN_CTLR_12BIT_H) */
 #define rx_tst_8b(xxx)       (rx_tst_12b()?0:1) /* !digitalRead(PIN_CTLR_12BIT_H) */
-#define rx_tst_run(xxx)      bitRead(PINA,0)    /*  digitalRead(PIN_CTLR_RUN_H)) */
-#define rx_tst_init(xxx)     bitRead(PINA,4)    /*  digitalRead(PIN_CTLR_INIT_H) */
+#define rx_tst_run(xxx)      bitRead(PINE,4)    /*  digitalRead(PIN_CTLR_RUN_H)) */
+#define rx_tst_init(xxx)     bitRead(PINE,5)    /*  digitalRead(PIN_CTLR_INIT_H) */
 #else
 #define rx_set_done(xxx)     PORTG |=  (1<<1)  /* digitalWrite(PIN_CTLR_DONE_H,HIGH) */
 #define rx_clr_done(xxx)     PORTG &= ~(1<<1)  /* digitalWrite(PIN_CTLR_DONE_H,LOW) */
@@ -173,10 +173,62 @@
 #define rx_tst_datai(xxx)   ((PINC & (1<<7)) ? 1 : 0) /* digitalRead(PIN_CTLR_DATAI_H) */
 #define rx_tst_12b(xxx)     ((PINA & (1<<6)) ? 1 : 0) /* (digitalRead(PIN_CTLR_12BIT_H)==HIGH) */
 #define rx_tst_8b(xxx)      ((PINA & (1<<6)) ? 0 : 1) /* (digitalRead(PIN_CTLR_12BIT_H)==LOW) */
-#define rx_tst_run(xxx)     ((PINA & (1<<0)) ? 1 : 0) /* (digitalRead(PIN_CTLR_RUN_H)==HIGH) */
-#define rx_tst_init(xxx)    ((PINA & (1<<4)) ? 1 : 0) /* (digitalRead(PIN_CTLR_INIT_H)==HIGH) */
+#define rx_tst_run(xxx)     ((PINE & (1<<4)) ? 1 : 0) /* (digitalRead(PIN_CTLR_RUN_H)==HIGH) */
+#define rx_tst_init(xxx)    ((PINE & (1<<5)) ? 1 : 0) /* (digitalRead(PIN_CTLR_INIT_H)==HIGH) */
 #endif
+#endif
+
+#if USE_PRO_EMBED_BOARD
+#if USE_BIT_BUILTINS
+#define rx_set_done(xxx)     bitSet(PORTH,5)    /* digitalWrite(PIN_CTLR_DONE_H,HIGH) */
+#define rx_clr_done(xxx)     bitClear(PORTH,5)  /* digitalWrite(PIN_CTLR_DONE_H,LOW) */
+#define rx_set_error(xxx)    bitSet(PORTG,5)    /* digitalWrite(PIN_CTLR_ERROR_H,HIGH) */
+#define rx_clr_error(xxx)    bitClear(PORTG,5)  /* digitalWrite(PIN_CTLR_ERROR_H,LOW) */
+#define rx_set_aclo(xxx)     bitSet(PORTD,7)    /* digitalWrite(PIN_CTLR_ACLO_H,HIGH) */
+#define rx_clr_aclo(xxx)     bitClear(PORTD,7)  /* digitalWrite(PIN_CTLR_ACLO_H,LOW) */
+#define rx_set_shift(xxx)    bitSet(PORTC,3)    /* digitalWrite(PIN_CTLR_SHIFT_H,HIGH) */
+#define rx_clr_shift(xxx)    bitClear(PORTC,3)  /* digitalWrite(PIN_CTLR_SHIFT_H,LOW) */
+#define rx_set_out(xxx)      bitSet(PORTC,1)    /* digitalWrite(PIN_CTLR_OUT_H,HIGH) */
+#define rx_clr_out(xxx)      bitClear(PORTC,1)  /* digitalWrite(PIN_CTLR_OUT_H,LOW) */
+#define rx_set_datao(xxx)    bitSet(PORTC,5)    /* digitalWrite(PIN_CTLR_DATAO_H,HIGH) */
+#define rx_clr_datao(xxx)    bitClear(PORTC,5)  /* digitalWrite(PIN_CTLR_DATAO_H,LOW) */
+#define rx_set_request(xxx)  bitSet(PORTH,3)    /* digitalWrite(PIN_CTLR_TR_RQST_H,HIGH) */
+#define rx_clr_request(xxx)  bitClear(PORTH,3)  /* digitalWrite(PIN_CTLR_TR_RQST_H,LOW) */
+// rx interface inputs test
+#define rx_tst_pio(xxx)      bitRead(PINC,0)    /*  digitalRead(PIN_CTLR_DMA_MODE_L) */
+#define rx_tst_dma(xxx)      (rx_tst_pio()?0:1) /* !digitalRead(PIN_CTLR_DMA_MODE_L) */
+#define rx_tst_datai(xxx)    bitRead(PING,0)    /*  digitalRead(PIN_CTLR_DATAI_H) */
+#define rx_tst_12b(xxx)      bitRead(PING,2)    /*  digitalRead(PIN_CTLR_12BIT_H) */
+#define rx_tst_8b(xxx)       (rx_tst_12b()?0:1) /* !digitalRead(PIN_CTLR_12BIT_H) */
+#define rx_tst_run(xxx)      bitRead(PINE,4)    /*  digitalRead(PIN_CTLR_RUN_H)) */
+#define rx_tst_init(xxx)     bitRead(PINE,5)    /*  digitalRead(PIN_CTLR_INIT_H) */
 #else
+#define rx_set_done(xxx)     PORTH |=  (1<<5)  /* digitalWrite(PIN_CTLR_DONE_H,HIGH) */
+#define rx_clr_done(xxx)     PORTH &= ~(1<<5)  /* digitalWrite(PIN_CTLR_DONE_H,LOW) */
+#define rx_set_error(xxx)    PORTG |=  (1<<5)  /* digitalWrite(PIN_CTLR_ERROR_H,HIGH) */
+#define rx_clr_error(xxx)    PORTG &= ~(1<<5)  /* digitalWrite(PIN_CTLR_ERROR_H,LOW) */
+#define rx_set_aclo(xxx)     PORTD |=  (1<<7)  /* digitalWrite(PIN_CTLR_ACLO_H,HIGH) */
+#define rx_clr_aclo(xxx)     PORTD &= ~(1<<7)  /* digitalWrite(PIN_CTLR_ACLO_H,LOW) */
+#define rx_set_shift(xxx)    PORTC |=  (1<<3)  /* digitalWrite(PIN_CTLR_SHIFT_H,HIGH) */
+#define rx_clr_shift(xxx)    PORTC &= ~(1<<3)  /* digitalWrite(PIN_CTLR_SHIFT_H,LOW) */
+#define rx_set_out(xxx)      PORTC |=  (1<<1)  /* digitalWrite(PIN_CTLR_OUT_H,HIGH) */
+#define rx_clr_out(xxx)      PORTC &= ~(1<<1)  /* digitalWrite(PIN_CTLR_OUT_H,LOW) */
+#define rx_set_datao(xxx)    PORTC |=  (1<<5)  /* digitalWrite(PIN_CTLR_DATAO_H,HIGH) */
+#define rx_clr_datao(xxx)    PORTC &= ~(1<<5)  /* digitalWrite(PIN_CTLR_DATAO_H,LOW) */
+#define rx_set_request(xxx)  PORTH |=  (1<<3)  /* digitalWrite(PIN_CTLR_TR_RQST_H,HIGH) */
+#define rx_clr_request(xxx)  PORTH &= ~(1<<3)  /* digitalWrite(PIN_CTLR_TR_RQST_H,LOW) */
+// rx interface inputs test
+#define rx_tst_pio(xxx)     ((PINC & (1<<0)) ? 1 : 0) /* (digitalRead(PIN_CTLR_DMA_MODE_L)==HIGH) */
+#define rx_tst_dma(xxx)     ((PINC & (1<<0)) ? 0 : 1) /* (digitalRead(PIN_CTLR_DMA_MODE_L)==LOW) */
+#define rx_tst_datai(xxx)   ((PING & (1<<0)) ? 1 : 0) /* digitalRead(PIN_CTLR_DATAI_H) */
+#define rx_tst_12b(xxx)     ((PING & (1<<2)) ? 1 : 0) /* (digitalRead(PIN_CTLR_12BIT_H)==HIGH) */
+#define rx_tst_8b(xxx)      ((PING & (1<<2)) ? 0 : 1) /* (digitalRead(PIN_CTLR_12BIT_H)==LOW) */
+#define rx_tst_run(xxx)     ((PINE & (1<<4)) ? 1 : 0) /* (digitalRead(PIN_CTLR_RUN_H)==HIGH) */
+#define rx_tst_init(xxx)    ((PINE & (1<<5)) ? 1 : 0) /* (digitalRead(PIN_CTLR_INIT_H)==HIGH) */
+#endif
+#endif
+
+#if USE_DEFAULT_BOARD
 #if USE_BIT_BUILTINS
 #define rx_set_done(xxx)     bitSet(PORTA,6)    /* digitalWrite(PIN_CTLR_DONE_H,HIGH) */
 #define rx_clr_done(xxx)     bitClear(PORTA,6)  /* digitalWrite(PIN_CTLR_DONE_H,LOW) */

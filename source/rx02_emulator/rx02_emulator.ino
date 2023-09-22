@@ -528,7 +528,11 @@ void setup (void)
     pinMode(PIN_BUTTON_UP,INPUT_PULLUP);
     pinMode(PIN_BUTTON_DOWN,INPUT_PULLUP);
     pinMode(PIN_BUTTON_ENTER,INPUT_PULLUP);        
-#endif    
+#endif  
+
+#if USE_PRO_EMBED_BOARD
+    pinMode(PIN_BUTTON_REINIT,INPUT_PULLUP);
+#endif
 
     // say hello
     tty->printf(F("\nRX02 Emulator %s (IDE %u.%u.%u/gcc %s) - %s - %s\n"),
@@ -640,6 +644,27 @@ byte read_buttons(void){
 }
 #endif
 
+#if USE_PRO_EMBED_BOARD
+byte read_reinit_button(void){
+  // 0 = No Key pressed                
+  // 1 = Pressed
+  
+  byte DebounceDelay = 50;
+  byte KeyOutput = 0;
+
+  if (digitalRead(PIN_BUTTON_REINIT) == LOW){ // ReINIT button press
+    delay(50);
+    if (digitalRead(PIN_BUTTON_REINIT) == LOW) {
+      KeyOutput = 1;
+      while (digitalRead(PIN_BUTTON_REINIT) == LOW);
+      tty->printf(F("ReINIT Button Pressed\n")); 
+    }
+  }       
+  
+  return KeyOutput;
+}
+#endif
+
 //
 // loop routine runs continuously
 //
@@ -649,6 +674,7 @@ void loop (void)
     if (tty->available()) run_user(tty->read());
 
 #if USE_RX
+
 #if USE_LCD_MENU
     switch (read_buttons()){
       case 1:
@@ -665,8 +691,18 @@ void loop (void)
         break;
     }
       
-    nav.doOutput();//if not doing poll the we need to do output "manualy"
-#endif    // process RX function
+    nav.doOutput();//if not doing poll the we need to do output "manually"
+#endif //USE_LCD_MENU    
+
+#if USE_PRO_EMBED_BOARD
+    if (read_reinit_button()) {
+      tty->printf(F("Sending INIT ...\n"));
+      rx_initialize(false);
+      tty->printf(F("... INIT complete\n"));
+    }
+#endif //USE_PRO_EMBED_BOARD
+        
+// process RX function
     rx_function();
 #endif // USE_RX
 

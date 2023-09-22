@@ -114,7 +114,13 @@ uint8_t sd_initialize (void)
 
     // check for card detect
     if (PIN_SD_CD > 0)
+// Sparkfun board is active high, the socket on the Pro Embed board is active low    
+#if USE_PRO_EMBED_BOARD    
+      if (digitalRead(PIN_SD_CD)) return initOk;
+#else
       if (!digitalRead(PIN_SD_CD)) return initOk;
+#endif
+      
 
     // init card, check for success
     if (!sdcard.begin(PIN_SD_CS_L, SPI_FULL_SPEED)) { sdcard.initErrorHalt(); return initOk; }

@@ -28,8 +28,11 @@
 #ifndef my_project_h
 #define my_project_h
 
-#define USE_LCD_MENU 1
+#define USE_ORIGINAL_BOARD 0
 #define USE_LCD_BOARD 1
+#define USE_PRO_EMBED_BOARD 0
+
+#define USE_LCD_MENU 1
 
 
 //
@@ -89,8 +92,8 @@
 // standard digital pins 0.. 13,  extra mega digital pins 14..53
 //
 #if USE_LCD_BOARD
-const byte PIN_CTLR_RUN_H      =  22; // PA0 input, interrupt
-const byte PIN_CTLR_INIT_H     =  26; // PA4 input, interrupt
+const byte PIN_CTLR_RUN_H      =   2; // PE4 input, interrupt
+const byte PIN_CTLR_INIT_H     =   3; // PE5 input, interrupt
 //
 const byte PIN_CTLR_DONE_H     = 40; // PG1 output
 const byte PIN_CTLR_ERROR_H    = 36; // PC1 output
@@ -104,7 +107,27 @@ const byte PIN_CTLR_ACLO_H     = 48; // PL1 output
 const byte PIN_CTLR_DMA_MODE_L = 24; // PA2 input
 //
 const byte PIN_SD_CD           = 0; // set to zero if not available
-#else
+#endif
+
+#if USE_PRO_EMBED_BOARD
+const byte PIN_CTLR_RUN_H      =  2; // PE4 input, interrupt
+const byte PIN_CTLR_INIT_H     =  3; // PE5 input, interrupt
+//
+const byte PIN_CTLR_DONE_H     =  8; // PH5 output
+const byte PIN_CTLR_ERROR_H    =  4; // PG5 output
+const byte PIN_CTLR_12BIT_H    = 39; // PG2 input
+const byte PIN_CTLR_TR_RQST_H  =  6; // PH3 output
+const byte PIN_CTLR_DATAO_H    = 32; // PC5 output
+const byte PIN_CTLR_DATAI_H    = 41; // PC0 input
+const byte PIN_CTLR_OUT_H      = 36; // PC1 output
+const byte PIN_CTLR_SHIFT_H    = 34; // PC3 output
+const byte PIN_CTLR_ACLO_H     = 38; // PD7 output
+const byte PIN_CTLR_DMA_MODE_L = 37; // PC0 input
+//
+const byte PIN_SD_CD           = 49; // PL0 card detect input, active low
+#endif
+
+#if USE_ORIGINAL_BOARD
 const byte PIN_CTLR_RUN_H      =  2; // PE4 input, interrupt
 const byte PIN_CTLR_INIT_H     =  3; // PE5 input, interrupt
 //
@@ -121,25 +144,42 @@ const byte PIN_CTLR_DMA_MODE_L = 37; // PC0 input
 //
 const byte PIN_SD_CD           = 49; // PL0 card detect input, active high
 #endif
+
+//SD Card pins are the same across all board variants
 const byte PIN_SD_MISO         = 50; // PB3 card MISO/DO input, active high
 const byte PIN_SD_MOSI         = 51; // PB2 card MOSI/DI output, active high
 const byte PIN_SD_SCK          = 52; // PB1 card SCK output, active high
 const byte PIN_SD_CS_L         = 53; // PB0 chip select output, active low//
+
 #if USE_LCD_BOARD
 const byte PIN_LED1            = 58; // A4, output, LED1, active high
 const byte PIN_LED2            = 59; // A5, output, LED2, active high
 const byte PIN_LED3            = 60; // A6, output, LED3, active high
-#else
+#endif
+
+#if USE_PRO_EMBED_BOARD
+const byte PIN_LED1            = 48; // D48, output, LED1, active high
+const byte PIN_LED2            = 28; // D28, output, LED2, active high
+const byte PIN_LED3            = 30; // D30, output, LED3, active high
+#endif
+
+#if USE_ORIGINAL_BOARD
 const byte PIN_LED1            = 10; // PB4 output, LED1, active high
 const byte PIN_LED2            = 11; // PB5 output, LED2, active high
 const byte PIN_LED3            = 12; // PB6 output, LED3, active high
 #endif
+
 const byte PIN_LEDY            = 13; // PB7 output, onboard yellow LED, active high//
+
 #if USE_LCD_MENU
-const byte PIN_BUTTON_MENU = 55;  // A1, Pin for Menu/Esc digital button.
-const byte PIN_BUTTON_UP = 56;    // A2, Pin for Up digital button.
-const byte PIN_BUTTON_DOWN = 54;  // A0, Pin for Down digital button.
-const byte PIN_BUTTON_ENTER = 57; // A3, Pin for Enter digital button.
+const byte PIN_BUTTON_MENU     = 55; // A1, Pin for Menu/Esc digital button.
+const byte PIN_BUTTON_UP       = 56; // A2, Pin for Up digital button.
+const byte PIN_BUTTON_DOWN     = 54; // A0, Pin for Down digital button.
+const byte PIN_BUTTON_ENTER    = 57; // A3, Pin for Enter digital button.
+#endif
+
+#if USE_PRO_EMBED_BOARD
+const byte PIN_BUTTON_REINIT   = 46; // D46, Pin for ReINIT digital button
 #endif
 
 
