@@ -37,8 +37,8 @@ The Arduino controller software has been moved into the source directory.
 
 Sample boot log in the Arduino USB serial monitor window:
 ```
-RX02 Emulator v1.96 (IDE 1.8.19/gcc 7.3.0) - Jul 14 2022 - 14:05:14
-SD: libVersion=2.2.0
+RX02 Emulator v2.00 (IDE 1.8.19/gcc 7.3.0) - Jul 11 2023 - 18:52:39
+SD: libVersion=2.2.2
 SD: cardType=SD3
 SD: cardSize=3781MB
 SD: volType=FAT32
@@ -98,7 +98,10 @@ Commands available:
   s(how)        -- show current unit filename assignments
   p(rint)       -- print full emulation state
   i(nit)        -- initialize emulator (like unibus INIT)
+  k(ill)        -- kill the emulator (reset and restart, like reset button)
   w(rite)       -- write current configuration into the SETUP.INI file
+  z(ap) STAMP   -- set current timestamp for file access
+                   format is: YYYY-MM-DD HH:MM:SS or YYYY-MM-DD HH:MM
   h(elp)        -- display this text
 
 Note: chars in () are optional. Case does not matter.
@@ -160,7 +163,23 @@ RX: EMPBUF rx_xmit_es(0000)
 
 (3) This code was written with tap stops set at 4 (versus the default of 2). Manually edit the Arduino <B>preferences.txt</B> file tab size line to be: <B>editor.tabs.size=4</B> if desired.
 
-(4) Right now there is some 'extraneous' code (ie, the TU58 driver interface) that is included by default but not currently used. A future plan is to add support to map a backend TU58 server to a file connection (ie, by using a pseudo filename) so that not only local MicroSD card file access can be supported, but simultaenous access to a backend PC-based file storage server can happen.
+# ALTERNATIVE to ARDUINO IDE #
+
+For those not interested in the source and/or installing the full Arduino IDE environment and tweaking it as necessary, I have now added a precompiled .hex version of the code representing the state of the current source. It is located in the 'binary' folder. There are two versions, without and with the bootloader image present. In most cases you would want to use the version of the .hex without the bootloader as the bootloader is already present (and required to be working) in any purchased ArduinoMEGA2560 board.
+
+There are at least two methods to download a .hex image file to the Arduino (and I am sure there are more):
+
+(1) Using `avrdude` in command line mode. This is the way the Arduino IDE does it when you install the IDE and use it to download the compiled .hex file. You can use the installed version of avrdude to do the download, or alternatively if you don't want to install the full IDE and compile from source, you can download the avrdude program directly from here: https://github.com/avrdudes/avrdude 
+
+On the command line:
+```
+  avrdude -D -cwiring -pm2560 -b115200 -PCOM# -Uflash:w:rx02_emulator.ino.hex:i
+```
+where `COM#` is the port that is associated with your mega2560 Arduino board, and other options that you may desire. Refer to the avrdude documentation.
+
+(2) Using a program called `xLoader` that is available from here: https://github.com/binaryupdates/xLoader . It is a simple Windows standalone application. 
+
+The process to download the .hex image using xLoader is documented here: https://www.aranacorp.com/en/generating-and-uploading-hex-files-to-an-arduino/ 
 
 # INSTALLATION #
 
