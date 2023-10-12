@@ -3,7 +3,9 @@
 This fork enables support for two new PCB designs.  The first at https://github.com/djtersteegc/rx02-emulator-mega-shield adds buttons and a LCD menu so you can use the emulator without an attached serial terminal for control and configuration.  It should be compiled with the following options in `my_project.h`
 
 `#define USE_ORIGINAL_BOARD 0`
+
 `#define USE_LCD_BOARD 1`
+
 `#define USE_PRO_EMBED_BOARD 0`
 
 `#define USE_LCD_MENU 1` (this can also be set to zero if you want to build this board without the menu and buttons options)
@@ -11,7 +13,9 @@ This fork enables support for two new PCB designs.  The first at https://github.
 The second is a mini SMD design based on the Mega 2560 Pro Embed board.  It's available at https://github.com/djtersteegc/rx02-mega2560-pro and should be compiled with
 
 `#define USE_ORIGINAL_BOARD 0`
+
 `#define USE_LCD_BOARD 0`
+
 `#define USE_PRO_EMBED_BOARD 1`
 
 `#define USE_LCD_MENU 0` 
