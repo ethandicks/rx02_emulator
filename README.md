@@ -22,6 +22,8 @@ The second is a mini SMD design based on the Mega 2560 Pro Embed board.  It's av
 
 I've also added precompiled binaries for both boards.  Use Don's excellent instructions below for how to flash your board.
 
+If you do want to compile this yourself, in addition to the libaries outlined below, you also need to install ArduinoMenu via the Library Manager or manually from https://github.com/neu-rah/ArduinoMenu.  I developed and compiled against version 4.21.4.
+
 # Overview #
 
 `rx02_emulator` is a hardware/software emulation of a DEC RX02 (or RX01) dual 8" floppy disk drive. The software runs on an Arduino Mega2560 processor board with a custom hardware interface shield that maps a dozen or so digital port bits to the custom DEC RX drive interface protocol.
